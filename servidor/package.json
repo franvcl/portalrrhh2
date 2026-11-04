@@ -1,0 +1,13 @@
+{
+  "name": "noticias-curso-servidor-hr",
+  "version": "1.0.0",
+  "description": "Servidor puente entre la página Noticias del Curso y Oracle XE (esquema HR)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "oracledb": "^6.5.1"
+  }
+}

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portal de Recursos Humanos conectado a Oracle HR">
+    <title>Portal RR.HH. - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-contenedor">
+        <!-- 1. BARRA LATERAL (SIDEBAR DE NAVEGACIÓN) -->
+        <aside class="dashboard-sidebar" id="sidebarMenu">
+            <div class="sidebar-marca">
+                <a href="#inicio" data-seccion="inicio">PORTAL<span>RR.HH.</span></a>
+            </div>
+            <nav id="menuPrincipal" class="sidebar-nav">
+                <a href="#inicio" data-seccion="inicio" class="activo">📊 Resumen General</a>
+                <a href="#departamentos" data-seccion="departamentos">🏢 Departamentos</a>
+                <a href="#equipo" data-seccion="equipo">👥 Equipo</a>
+                <a href="#salarios" data-seccion="salarios">💰 Evaluador Salarial</a>
+                <a href="#agenda" data-seccion="agenda">📅 Agenda RR.HH.</a>
+                <a href="#empleadomes" data-seccion="empleadomes">⭐ Empleado del Mes</a>
+            </nav>
+        </aside>
+
+        <!-- 2. CONTENIDO PRINCIPAL (TOPBAR + SECCIONES) -->
+        <div class="dashboard-main">
+            <!-- Barra superior del Dashboard -->
+            <header class="topbar">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button class="btn-menu" id="btnMenu" aria-label="Abrir menú">☰</button>
+                    <span class="topbar-titulo">Panel de Administración de Personal</span>
+                </div>
+                <div class="topbar-usuario">
+                    <span>👤 Administrador RR.HH.</span>
+                </div>
+            </header>
+
+            <!-- Área dinámica de Secciones SPA -->
+            <main class="contenido-dashboard">
+                <!-- Sección 1: Inicio / Métricas KPI -->
+                <section id="inicio" class="seccion activa">
+                    <div class="titulo-seccion">
+                        <div>
+                            <p class="etiqueta">VISTA GENERAL</p>
+                            <h2>Resumen del Sistema</h2>
+                        </div>
+                    </div>
+
+                    <!-- Fila de métricas clave (KPIs) -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <span class="kpi-icono">🏢</span>
+                            <div>
+                                <p class="kpi-label">Departamentos</p>
+                                <h3 id="kpiDepartamentos">Cargando...</h3>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <span class="kpi-icono">👥</span>
+                            <div>
+                                <p class="kpi-label">Base de Datos</p>
+                                <h3>Oracle XE (HR)</h3>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <span class="kpi-icono">📅</span>
+                            <div>
+                                <p class="kpi-label">Actividades Agenda</p>
+                                <h3 id="kpiActividades">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Banner de bienvenida rápido -->
+                    <div class="panel">
+                        <h3>Bienvenido al Portal de Recursos Humanos</h3>
+                        <p style="margin-top: 0.5rem; color: var(--color-texto-claro);">
+                            Gestión integral conectada al esquema HR de Oracle Database. Utiliza el menú lateral para consultar departamentos, revisar el personal activo, evaluar salarios según rangos oficiales o agendar entrevistas.
+                        </p>
+                        <div style="margin-top: 1.25rem;">
+                            <a href="#departamentos" class="btn btn-principal" data-seccion="departamentos">Explorar Departamentos</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 2: Departamentos -->
+                <section id="departamentos" class="seccion">
+                    <div class="titulo-seccion">
+                        <div>
+                            <p class="etiqueta">ESTRUCTURA ORGANIZACIONAL</p>
+                            <h2>Departamentos</h2>
+                        </div>
+                        <span class="contador" id="contadorDepartamentos">Cargando...</span>
+                    </div>
+                    <div class="grid-noticias" id="gridDepartamentos">
+                        <!-- Las tarjetas de departamentos se cargarán dinámicamente con JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Sección 3: Equipo (Empleados) -->
+                <section id="equipo" class="seccion">
+                    <div class="titulo-seccion">
+                        <div>
+                            <p class="etiqueta">PERSONAL</p>
+                            <h2>Equipo de Empleados</h2>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="filtros-bd" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <div class="campo" style="flex: 1; min-width: 200px;">
+                                <label for="filtroDepartamentoEquipo">Filtrar por Departamento</label>
+                                <select id="filtroDepartamentoEquipo">
+                                    <option value="">Todos los departamentos</option>
+                                </select>
+                            </div>
+                            <div class="campo" style="flex: 1; min-width: 200px;">
+                                <label for="buscadorEmpleado">Buscar por nombre o apellido</label>
+                                <input type="text" id="buscadorEmpleado" placeholder="Ej.: King, Steven...">
+                            </div>
+                        </div>
+                        <div class="tabla-scroll" id="tablaEmpleados">
+                            <!-- La tabla de empleados se cargará dinámicamente -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 4: Evaluador de Salario -->
+                <section id="salarios" class="seccion">
+                    <div class="titulo-seccion">
+                        <div>
+                            <p class="etiqueta">COMPENSACIONES</p>
+                            <h2>Evaluador de Salario</h2>
+                        </div>
+                    </div>
+                    <div class="panel formulario" style="max-width: 650px;">
+                        <div class="campo">
+                            <label for="selectCargo">Seleccione el Cargo</label>
+                            <select id="selectCargo">
+                                <option value="">Cargando cargos...</option>
+                            </select>
+                        </div>
+                        <div class="campo">
+                            <label for="inputSalario">Ingrese el Salario Mensual ($)</label>
+                            <input type="number" id="inputSalario" placeholder="Ej.: 5000">
+                        </div>
+                        <button id="btnEvaluarSalario" class="btn btn-principal">Evaluar Salario</button>
+                        <div class="resultado" id="resultadoSalario">Selecciona un cargo y escribe un salario para evaluar.</div>
+                    </div>
+                </section>
+
+                <!-- Sección a Elección: Agenda RR.HH. -->
+                <section id="agenda" class="seccion">
+                    <div class="titulo-seccion">
+                        <div>
+                            <p class="etiqueta">ORGANIZACIÓN INTERNA</p>
+                            <h2>Agenda de RR.HH.</h2>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3>Registrar nueva actividad o entrevista</h3>
+                        <div class="campo" style="margin-top: 1rem;">
+                            <label for="fechaActividad">Fecha</label>
+                            <input type="date" id="fechaActividad">
+                        </div>
+                        <div class="campo">
+                            <label for="nombreActividad">Descripción de la actividad</label>
+                            <input type="text" id="nombreActividad" placeholder="Ej.: Entrevista candidato desarrollador">
+                        </div>
+                        <button class="btn btn-principal" id="btnAgregarActividad" style="width: 100%;">Guardar en Agenda</button>
+                        <div id="listaActividades" class="lista-actividades" style="margin-top: 1.5rem;">
+                            <!-- Las actividades guardadas en localStorage aparecerán aquí -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección a Elección: Empleado del Mes -->
+                <section id="empleadomes" class="seccion">
+                    <div class="titulo-seccion">
+                        <div>
+                            <p class="etiqueta">RECONOCIMIENTO</p>
+                            <h2>Empleado del Mes</h2>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <p>Selecciona una foto, ingresa el nombre del empleado destacado y aplica efectos visuales.</p>
+                        
+                        <div class="campo" style="margin-top: 1rem;">
+                            <label for="nombreEmpleadoMes">Nombre del Empleado</label>
+                            <input type="text" id="nombreEmpleadoMes" placeholder="Ej.: Steven King">
+                        </div>
+
+                        <div class="campo">
+                            <label class="selector-archivo" for="inputFotoEmpleado" style="display:inline-block; background:var(--color-primario); color:white; padding:0.75rem 1.5rem; border-radius:var(--radio); cursor:pointer;">📷 Seleccionar foto del empleado</label>
+                            <input type="file" id="inputFotoEmpleado" accept="image/*" hidden>
+                        </div>
+
+                        <div id="editorEmpleadoMes" class="editor-imagen oculto" style="margin-top: 1.5rem; text-align: center;">
+                            <div class="tarjeta-destacada" style="max-width: 320px; margin: 0 auto; padding: 1.5rem; background: var(--color-blanco); border: 1px solid var(--color-borde); border-radius: var(--radio);">
+                                <img id="previewEmpleadoMes" alt="Vista previa" style="width: 100%; height: 220px; object-fit: cover; border-radius: 4px;">
+                                <h3 id="tituloNombreEmpleado" style="margin-top: 1rem; color: var(--color-texto);">Nombre del empleado</h3>
+                            </div>
+                            <div class="controles-imagen" style="display: flex; gap: 0.75rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap;">
+                                <button class="btn" id="btnGrisEmpleado" style="background: #64748b; color: white;">Escala de grises</button>
+                                <button class="btn" id="btnBrilloEmpleado" style="background: #64748b; color: white;">Aumentar brillo</button>
+                                <button class="btn" id="btnRotarEmpleado" style="background: #64748b; color: white;">Rotar 90°</button>
+                                <button class="btn" id="btnRestaurarEmpleado" style="background: #cbd5e1; color: var(--color-texto);">Restaurar</button>
+                            </div>
+                            <button class="btn btn-principal" id="btnGuardarEmpleadoMes" style="margin-top: 1.5rem; width: 100%;">Guardar Empleado del Mes</button>
+                        </div>
+
+                        <div class="panel" style="margin-top: 2rem; text-align: center;">
+                            <h3>🏆 Empleado del Mes Actual (Guardado)</h3>
+                            <div id="empleadoGuardadoContainer" style="margin-top: 1rem;">
+                                <p>No hay ningún empleado guardado todavía.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Pie de página integrado al Dashboard -->
+            <footer style="padding: 1.25rem 2rem; border-top: 1px solid var(--color-borde); background: #ffffff; color: var(--color-texto-claro); font-size: 0.85rem; display: flex; justify-content: space-between;">
+                <strong>Portal RR.HH.</strong>
+                <span>Proyecto Web · Oracle HR & Node.js</span>
+            </footer>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
